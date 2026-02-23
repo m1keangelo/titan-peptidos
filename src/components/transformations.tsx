@@ -1,7 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Quote } from 'lucide-react'
+import Image from 'next/image'
+import { Quote, User } from 'lucide-react'
 
 const testimonials = [
   {
@@ -11,6 +12,7 @@ const testimonials = [
     location: 'Santa Cruz, Bolivia',
     category: 'Pérdida de Peso',
     result: '-15kg en 3 meses',
+    avatar: '/images/weightloss.jpg',
   },
   {
     quote:
@@ -19,6 +21,7 @@ const testimonials = [
     location: 'La Paz, Bolivia',
     category: 'Recuperación',
     result: 'Recuperación completa',
+    avatar: '/images/recovery.jpg',
   },
   {
     quote:
@@ -27,6 +30,7 @@ const testimonials = [
     location: 'Cochabamba, Bolivia',
     category: 'Cognitivo',
     result: '+40% productividad',
+    avatar: '/images/cognitive.jpg',
   },
   {
     quote:
@@ -35,6 +39,7 @@ const testimonials = [
     location: 'Sucre, Bolivia',
     category: 'Salud Sexual',
     result: 'Confianza restaurada',
+    avatar: '/images/fitness.jpg',
   },
   {
     quote:
@@ -43,6 +48,7 @@ const testimonials = [
     location: 'Tarija, Bolivia',
     category: 'Longevidad',
     result: '-10 años apariencia',
+    avatar: '/images/skin.jpg',
   },
   {
     quote:
@@ -51,6 +57,7 @@ const testimonials = [
     location: 'Oruro, Bolivia',
     category: 'Rendimiento',
     result: '+5kg músculo',
+    avatar: '/images/fitness.jpg',
   },
 ]
 
@@ -94,11 +101,22 @@ export function Transformations() {
                 "{testimonial.quote}"
               </p>
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {testimonial.location}
-                  </p>
+                <div className="flex items-center gap-3">
+                  {/* Avatar */}
+                  <div className="relative w-10 h-10 rounded-full overflow-hidden bg-muted">
+                    <Image
+                      src={testimonial.avatar}
+                      alt={testimonial.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold">{testimonial.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {testimonial.location}
+                    </p>
+                  </div>
                 </div>
                 <div className="text-right">
                   <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">

@@ -1,18 +1,28 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Shield, Award, Stethoscope } from 'lucide-react'
 
 export function HeroSection() {
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background/50" />
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/hero-bg.jpg"
+          alt="Medical background"
+          fill
+          className="object-cover opacity-30"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
+      </div>
       
       {/* Animated gradient orb */}
       <motion.div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full z-0"
         style={{
           background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 70%)',
         }}
@@ -29,6 +39,22 @@ export function HeroSection() {
 
       <div className="container relative z-10 px-4 md:px-6">
         <div className="flex flex-col items-center text-center space-y-8">
+          {/* Product Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="relative w-48 h-48 md:w-64 md:h-64 mb-4"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl" />
+            <Image
+              src="/images/peptide-vial.jpg"
+              alt="Titan Peptidos Vial"
+              fill
+              className="object-contain rounded-full border-2 border-primary/30 shadow-glow"
+            />
+          </motion.div>
+
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

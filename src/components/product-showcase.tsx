@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
@@ -9,36 +10,42 @@ const categories = [
     title: 'Pérdida de Peso',
     description: 'Semaglutida, Tirzepatida, Tesamorelina',
     href: '/peptidos/perdida-de-peso',
+    image: '/images/weightloss.jpg',
     gradient: 'from-blue-500/20 to-cyan-500/20',
   },
   {
     title: 'Rendimiento',
     description: 'CJC-1295, Ipamorelina, Ibutamoren',
     href: '/peptidos/rendimiento',
+    image: '/images/fitness.jpg',
     gradient: 'from-orange-500/20 to-red-500/20',
   },
   {
     title: 'Recuperación',
     description: 'BPC-157, TB-500, GHK-Cu',
     href: '/peptidos/recuperacion',
+    image: '/images/recovery.jpg',
     gradient: 'from-green-500/20 to-emerald-500/20',
   },
   {
     title: 'Cognitivo',
     description: 'Semax, Selank, Dihexa',
     href: '/peptidos/cognitivo',
+    image: '/images/cognitive.jpg',
     gradient: 'from-purple-500/20 to-pink-500/20',
   },
   {
-    title: 'Salud Sexual',
-    description: 'PT-141, Oxytocina',
-    href: '/peptidos/salud-sexual',
+    title: 'Piel & Belleza',
+    description: 'GHK-Cu, Péptidos capilares',
+    href: '/peptidos/piel',
+    image: '/images/skin.jpg',
     gradient: 'from-rose-500/20 to-pink-500/20',
   },
   {
     title: 'Longevidad',
     description: 'Epitalon, NAD+, GHK-Cu',
     href: '/peptidos/longevidad',
+    image: '/images/longevity.jpg',
     gradient: 'from-amber-500/20 to-yellow-500/20',
   },
 ]
@@ -79,12 +86,20 @@ export function ProductShowcase() {
             >
               <Link
                 href={category.href}
-                className="group block glass-card p-6 h-full hover:bg-white/10 transition-all duration-300"
+                className="group block glass-card overflow-hidden h-full hover:bg-white/10 transition-all duration-300"
               >
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl`}
-                />
-                <div className="relative z-10">
+                {/* Image */}
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={category.image}
+                    alt={category.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className={`absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-60 group-hover:opacity-40 transition-opacity`} />
+                </div>
+                
+                <div className="p-6">
                   <h3 className="font-semibold text-xl mb-2 group-hover:text-primary transition-colors">
                     {category.title}
                   </h3>
