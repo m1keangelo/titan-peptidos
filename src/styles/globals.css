@@ -4,25 +4,56 @@
 
 :root {
   --background: 0 0% 100%;
-  --foreground: 240 10% 3.9%;
+  --foreground: 0 0% 9%;
   --card: 0 0% 100%;
-  --card-foreground: 240 10% 3.9%;
+  --card-foreground: 0 0% 9%;
   --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 3.9%;
-  --primary: 340 75% 55%;
+  --popover-foreground: 0 0% 9%;
+  --primary: 340 82% 52%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 240 4.8% 95.9%;
-  --secondary-foreground: 240 5.9% 10%;
-  --muted: 240 4.8% 95.9%;
-  --muted-foreground: 240 3.8% 46.1%;
-  --accent: 340 75% 97%;
-  --accent-foreground: 240 5.9% 10%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 45%;
+  --accent: 340 82% 97%;
+  --accent-foreground: 0 0% 9%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --ring: 340 75% 55%;
+  --border: 0 0% 90%;
+  --input: 0 0% 90%;
+  --ring: 340 82% 52%;
   --radius: 0.5rem;
+  
+  /* Hers exact colors */
+  --hers-pink: #E91E63;
+  --hers-pink-dark: #C2185B;
+  --hers-pink-light: #FCE4EC;
+  --hers-text: #1a1a1a;
+  --hers-gray: #666666;
+  --hers-light-gray: #f5f5f5;
+  --hers-border: #e5e5e5;
+}
+
+.dark {
+  --background: 0 0% 6%;
+  --foreground: 0 0% 95%;
+  --card: 0 0% 8%;
+  --card-foreground: 0 0% 95%;
+  --popover: 0 0% 8%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 340 82% 52%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 95%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 65%;
+  --accent: 340 50% 15%;
+  --accent-foreground: 0 0% 95%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 340 82% 52%;
 }
 
 @layer base {
@@ -35,27 +66,111 @@
 }
 
 @layer components {
-  .hers-heading {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+  /* Hers Layout Classes */
+  .hers-container {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12;
   }
   
-  .hers-subheading {
-    @apply text-2xl md:text-3xl font-semibold tracking-tight;
+  .hers-section {
+    @apply py-16 md:py-24;
+  }
+  
+  /* Hers Typography */
+  .hers-heading {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight;
+  }
+  
+  .hers-heading-md {
+    @apply text-3xl md:text-4xl font-bold tracking-tight leading-tight;
+  }
+  
+  .hers-heading-sm {
+    @apply text-2xl md:text-3xl font-bold tracking-tight;
   }
   
   .hers-body {
     @apply text-base md:text-lg text-muted-foreground leading-relaxed;
   }
   
-  .hers-card {
-    @apply bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg;
+  .hers-body-sm {
+    @apply text-sm text-muted-foreground leading-relaxed;
   }
   
+  /* Hers Cards */
+  .hers-card {
+    @apply bg-card rounded-2xl shadow-sm border border-border overflow-hidden transition-all duration-300 hover:shadow-lg;
+  }
+  
+  /* Hers Buttons */
   .hers-btn-primary {
-    @apply bg-[#E91E63] hover:bg-[#C2185B] text-white font-medium px-6 py-3 rounded-full transition-all duration-200;
+    @apply bg-[#E91E63] hover:bg-[#C2185B] text-white font-semibold px-6 py-3 rounded-full transition-all duration-200 inline-flex items-center justify-center;
   }
   
   .hers-btn-secondary {
-    @apply bg-white border border-gray-200 hover:border-[#E91E63] hover:text-[#E91E63] font-medium px-6 py-3 rounded-full transition-all duration-200;
+    @apply bg-background border border-border hover:border-[#E91E63] hover:text-[#E91E63] font-semibold px-6 py-3 rounded-full transition-all duration-200 inline-flex items-center justify-center;
   }
+  
+  .hers-btn-ghost {
+    @apply hover:bg-accent font-medium px-4 py-2 rounded-full transition-all duration-200;
+  }
+  
+  /* Hers Input */
+  .hers-input {
+    @apply w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#E91E63]/20 focus:border-[#E91E63] transition-all;
+  }
+  
+  /* Footer link */
+  .footer-link {
+    @apply text-sm text-muted-foreground hover:text-[#E91E63] transition-colors;
+  }
+  
+  /* Quiz option */
+  .quiz-option {
+    @apply w-full p-4 rounded-xl border border-border bg-card hover:border-[#E91E63]/50 hover:bg-accent transition-all text-left;
+  }
+  
+  .quiz-option.selected {
+    @apply border-[#E91E63] bg-[#E91E63]/5;
+  }
+  
+  /* Testimonial card */
+  .testimonial-card {
+    @apply bg-card rounded-3xl p-8 md:p-12 shadow-sm border border-border;
+  }
+  
+  /* Stat number */
+  .stat-number {
+    @apply text-3xl md:text-4xl font-bold text-foreground;
+  }
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
 }

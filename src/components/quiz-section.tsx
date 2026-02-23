@@ -45,32 +45,32 @@ const recommendations: Record<string, { title: string; products: string[]; descr
   weight: {
     title: 'Protocolo de Pérdida de Peso',
     products: ['Semaglutida', 'Tirzepatida'],
-    description: 'Péptidos diseñados para controlar el apetito y acelerar el metabolismo.',
+    description: 'Péptidos diseñados para controlar el apetito y acelerar el metabolismo. Resultados clínicamente probados.',
   },
   performance: {
     title: 'Protocolo de Rendimiento',
-    products: ['CJC-1295', 'Ipamorelina'],
-    description: 'Mejora tu fuerza, resistencia y recuperación muscular.',
+    products: ['CJC-1295', 'Ipamorelina', 'Ibutamoren'],
+    description: 'Mejora tu fuerza, resistencia y recuperación muscular con péptidos de última generación.',
   },
   recovery: {
     title: 'Protocolo de Recuperación',
-    products: ['BPC-157', 'TB-500'],
-    description: 'Acelera la curación de lesiones y reduce la inflamación.',
+    products: ['BPC-157', 'TB-500', 'GHK-Cu'],
+    description: 'Acelera la curación de lesiones y reduce la inflamación de forma natural.',
   },
   cognitive: {
     title: 'Protocolo Cognitivo',
-    products: ['Semax', 'Selank'],
-    description: 'Mejora tu memoria, focus y claridad mental.',
+    products: ['Semax', 'Selank', 'Dihexa'],
+    description: 'Mejora tu memoria, focus y claridad mental con nootrópicos de grado médico.',
   },
   skin: {
     title: 'Protocolo de Piel',
-    products: ['GHK-Cu'],
-    description: 'Rejuvenece tu piel desde adentro con cobre peptídico.',
+    products: ['GHK-Cu', 'Epitalon'],
+    description: 'Rejuvenece tu piel desde adentro con cobre peptídico y activadores celulares.',
   },
   longevity: {
     title: 'Protocolo de Longevidad',
-    products: ['Epitalon'],
-    description: 'Activa tu telomerasa y revierte el reloj biológico.',
+    products: ['Epitalon', 'NAD+', 'GHK-Cu'],
+    description: 'Activa tu telomerasa y revierte el reloj biológico con ciencia anti-edad avanzada.',
   },
 }
 
@@ -105,37 +105,37 @@ export function QuizSection() {
   if (showResults) {
     const recommendation = getRecommendation()
     return (
-      <section id="quiz" className="hers-section bg-[hsl(340,30%,98%)]">
+      <section id="quiz" className="hers-section bg-[#E91E63]/5">
         <div className="hers-container max-w-2xl">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-3xl p-8 md:p-12 shadow-xl text-center"
+            className="hers-card p-8 md:p-12 text-center"
           >
-            <div className="w-16 h-16 bg-[hsl(340,65%,55%)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Sparkles className="w-8 h-8 text-[hsl(340,65%,55%)]" />
+            <div className="w-16 h-16 bg-[#E91E63]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="w-8 h-8 text-[#E91E63]" />
             </div>
-            <h3 className="hers-heading-md text-[#1a1a1a] mb-4">
+            <h3 className="hers-heading-sm text-foreground mb-4">
               Tu Protocolo Recomendado
             </h3>
-            <h4 className="text-xl font-semibold text-[hsl(340,65%,55%)] mb-4">
+            <h4 className="text-xl font-semibold text-[#E91E63] mb-4">
               {recommendation.title}
             </h4>
-            <p className="text-[hsl(0,0%,40%)] mb-6">
+            <p className="text-muted-foreground mb-6">
               {recommendation.description}
             </p>
             <div className="flex flex-wrap justify-center gap-2 mb-8">
               {recommendation.products.map((product) => (
                 <span
                   key={product}
-                  className="px-4 py-2 bg-[hsl(340,30%,96%)] rounded-full text-sm font-medium text-[#1a1a1a]"
+                  className="px-4 py-2 bg-accent rounded-full text-sm font-medium text-foreground"
                 >
                   {product}
                 </span>
               ))}
             </div>
-            <Link href="#consulta" className="hers-button-primary inline-flex">
+            <Link href="#consulta" className="hers-btn-primary">
               Comenzar Consulta
               <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
@@ -146,7 +146,7 @@ export function QuizSection() {
   }
 
   return (
-    <section id="quiz" className="hers-section bg-[hsl(340,30%,98%)]">
+    <section id="quiz" className="hers-section bg-[#E91E63]/5">
       <div className="hers-container max-w-2xl">
         {/* Section Header */}
         <motion.div
@@ -155,13 +155,13 @@ export function QuizSection() {
           viewport={{ once: true }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[hsl(340,15%,92%)] mb-4">
-            <Sparkles className="w-4 h-4 text-[hsl(340,65%,55%)]" />
-            <span className="text-sm font-medium text-[#1a1a1a]">
-              Quiz de Salud Personalizado
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border mb-4">
+            <Sparkles className="w-4 h-4 text-[#E91E63]" />
+            <span className="text-sm font-medium text-foreground">
+              Quiz Personalizado
             </span>
           </div>
-          <h2 className="hers-heading-md text-[#1a1a1a]">
+          <h2 className="hers-heading-sm text-foreground">
             Encuentra tu protocolo ideal en 2 minutos
           </h2>
         </motion.div>
@@ -171,17 +171,33 @@ export function QuizSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-white rounded-3xl p-6 md:p-8 shadow-xl"
+          className="hers-card p-6 md:p-8"
         >
-          {/* Progress Bar */}
+          {/* Progress Dots */}
+          <div className="flex items-center justify-center gap-2 mb-8">
+            {quizSteps.map((_, index) => (
+              <div
+                key={index}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === currentStep
+                    ? 'w-8 bg-[#E91E63]'
+                    : index < currentStep
+                    ? 'w-2 bg-[#E91E63]'
+                    : 'w-2 bg-border'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Progress Bar (hidden but functional) */}
           <div className="mb-8">
-            <div className="flex justify-between text-sm text-[hsl(0,0%,40%)] mb-2">
+            <div className="flex justify-between text-sm text-muted-foreground mb-2">
               <span>Paso {currentStep + 1} de {quizSteps.length}</span>
               <span>{Math.round(progress)}%</span>
             </div>
-            <div className="h-2 bg-[hsl(340,30%,96%)] rounded-full overflow-hidden">
+            <div className="h-2 bg-accent rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-[hsl(340,65%,55%)] rounded-full"
+                className="h-full bg-[#E91E63] rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.3 }}
@@ -198,7 +214,7 @@ export function QuizSection() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl md:text-2xl font-semibold text-[#1a1a1a] mb-6">
+              <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-6">
                 {quizSteps[currentStep].question}
               </h3>
 
@@ -217,12 +233,12 @@ export function QuizSection() {
                           {option.icon && (
                             <span className="text-2xl">{option.icon}</span>
                           )}
-                          <span className="font-medium text-[#1a1a1a]">
+                          <span className="font-medium text-foreground">
                             {option.label}
                           </span>
                         </div>
                         {isSelected && (
-                          <Check className="w-5 h-5 text-[hsl(340,65%,55%)]" />
+                          <Check className="w-5 h-5 text-[#E91E63]" />
                         )}
                       </div>
                     </button>
@@ -236,7 +252,7 @@ export function QuizSection() {
           {currentStep > 0 && (
             <button
               onClick={handleBack}
-              className="mt-6 flex items-center gap-2 text-sm text-[hsl(0,0%,40%)] hover:text-[#1a1a1a] transition-colors"
+              className="mt-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
               Anterior

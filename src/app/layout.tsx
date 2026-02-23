@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '../styles/globals.css'
+import { ThemeProvider } from '../components/theme-provider'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -8,8 +9,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Titan Peptidos | Transforma Tu Potencial',
-  description: 'Telemedicina de péptidos premium en Bolivia. Consultas médicas en línea, laboratorios certificados, protocolos personalizados.',
+  title: 'Titan Peptidos | Telemedicina de Péptidos en Bolivia',
+  description: 'Consultas médicas en línea, péptidos premium de laboratorios certificados. Transforma tu salud con Semaglutida, Tirzepatida, CJC-1295 y más.',
 }
 
 export default function RootLayout({
@@ -18,9 +19,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans`}>
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )
