@@ -1,120 +1,137 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { useState } from 'react'
+import { ArrowUpRight } from 'lucide-react'
 
-const categories = [
+gsap.registerPlugin(ScrollTrigger)
+
+const products = [
   {
-    title: 'Rendimiento Físico',
-    description: 'CJC-1295, Ipamorelina, Ibutamoren',
-    href: '#rendimiento',
+    id: 'muscle-growth',
+    title: 'Crecimiento Muscular',
+    subtitle: 'CJC-1295 / Ipamorelin',
     image: '/images/fitness.jpg',
     hoverImage: '/images/peptide-vial.jpg',
+    href: '#muscle'
   },
   {
-    title: 'Recuperación Rápida',
-    description: 'BPC-157, TB-500, GHK-Cu',
-    href: '#recuperacion',
+    id: 'recovery',
+    title: 'Recuperación',
+    subtitle: 'BPC-157 / TB-500',
     image: '/images/recovery.jpg',
     hoverImage: '/images/peptide-vial.jpg',
+    href: '#recovery'
   },
   {
-    title: 'Salud Cognitiva',
-    description: 'Semax, Selank, Dihexa',
-    href: '#cognitivo',
+    id: 'cognitive',
+    title: 'Rendimiento Mental',
+    subtitle: 'Semax / Selank',
     image: '/images/cognitive.jpg',
     hoverImage: '/images/peptide-vial.jpg',
+    href: '#cognitive'
   },
   {
+    id: 'longevity',
     title: 'Longevidad',
-    description: 'Epitalon, NAD+, GHK-Cu',
-    href: '#longevidad',
+    subtitle: 'Epitalon / GHK-Cu',
     image: '/images/longevity.jpg',
     hoverImage: '/images/peptide-vial.jpg',
+    href: '#longevity'
   },
 ]
 
 export function ProductGrid() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const cardsRef = useRef<(HTMLAnchorElement | null)[]>([])
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Staggered card reveal
+      gsap.from(cardsRef.current.filter(Boolean), {
+        y: 60,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse'
+        }
+      })
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section id="productos" className="py-16 md:py-24 bg-background">
+    <section ref={sectionRef} id="productos" className="hers-section bg-background">
       <div className="hers-container">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-          <h2 className="hers-heading-md text-foreground mb-4">
-            Encuentra lo que necesitas
+        <div className="text-center mb-16">
+          <h2 className="hers-heading-lg text-foreground mb-4">
+            Protocolos especializados
           </h2>
-          <p className="hers-body">
-            Péptidos de grado farmacéutico para cada objetivo de salud. Todos con prescripción médica y seguimiento profesional.
+          <p className="hers-body max-w-2xl mx-auto">
+            Cada protocolo está diseñado para objetivos específicos de salud y rendimiento
           </p>
         </div>
 
-        {/* 2x2 Product Grid with Hover Image Swap */}
-        <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-6">
-            {categories.map((category) => (
-              <CategoryCard key={category.title} {...category} />
-            ))}
-          </div>
-
-          {/* Bottom CTA */}
-          <div className="text-center mt-12">
-            <p className="text-muted-foreground mb-4">¿No sabes por dónde empezar?</p>
-            <Link href="#quiz" className="hers-btn-primary inline-flex items-center">
-              Descubre tu protocolo ideal
-              <ArrowRight className="h-4 w-4 ml-2" />
+        {/* Product Grid */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {products.map((product, index) => (
+            <Link
+              key={product.id}
+              ref={el => { cardsRef.current[index] = el }}
+              href={product.href}
+              className="group relative block hers-card"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              <div className="relative h-64 lg:h-80 overflow-hidden">
+                {/* Default Image */}
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  fill
+                  className={`object-cover transition-all duration-700 ${hoveredIndex === index ? 'opacity-0 scale-110' : 'opacity-100 scale-100'}`}
+                />
+                {/* Hover Image */}
+                <Image
+                  src={product.hoverImage}
+                  alt={`${product.title} - vial`}
+                  fill
+                  className={`object-cover transition-all duration-700 ${hoveredIndex === index ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
+                />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+              </div>
+              
+              {/* Content */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
+                <div className="flex items-end justify-between">
+                  <div>
+                    <h3 className="text-xl lg:text-2xl font-bold text-white mb-1">
+                      {product.title}
+                    </h3>
+                    <p className="text-white/80 text-sm">
+                      {product.subtitle}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm group-hover:bg-[#E91E63] transition-all duration-300">
+                    <ArrowUpRight className="h-5 w-5 text-white transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+                  </div>
+                </div>
+              </div>
             </Link>
-          </div>
+          ))}
         </div>
       </div>
     </section>
-  )
-}
-
-function CategoryCard({ title, description, href, image, hoverImage }: {
-  title: string
-  description: string
-  href: string
-  image: string
-  hoverImage: string
-}) {
-  const [isHovered, setIsHovered] = useState(false)
-
-  return (
-    <Link 
-      href={href}
-      className="hers-card group block"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Image Container with Hover Swap */}
-      <div className="relative h-56 md:h-64 overflow-hidden">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className={`object-cover transition-opacity duration-500 ${isHovered ? 'opacity-0' : 'opacity-100'}`}
-        />
-        <Image
-          src={hoverImage}
-          alt={title}
-          fill
-          className={`object-cover transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
-        />
-        {/* Subtle overlay on hover */}
-        <div className={`absolute inset-0 bg-[#E91E63]/10 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
-      </div>
-      
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-[#E91E63] transition-colors">
-          {title}
-        </h3>
-        <p className="text-muted-foreground text-sm">
-          {description}
-        </p>
-      </div>
-    </Link>
   )
 }

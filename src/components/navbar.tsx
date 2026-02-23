@@ -1,52 +1,108 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
 import { Menu, X, Moon, Sun } from 'lucide-react'
-import { useState } from 'react'
-import { useTheme } from './theme-provider'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
-  const { theme, toggleTheme } = useTheme()
+  const [isDark, setIsDark] = useState(false)
+  const navRef = useRef<HTMLElement>(null)
+  const logoRef = useRef<HTMLAnchorElement>(null)
+
+  useEffect(() => {
+    // Initial animation
+    const ctx = gsap.context(() => {
+      gsap.from(navRef.current, {
+        y: -100,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        delay: 0.2
+      })
+
+      gsap.from('.nav-link', {
+        y: -20,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.08,
+        ease: 'power2.out',
+        delay: 0.5
+      })
+    })
+
+    return () => ctx.revert()
+  }, [])
+
+  useEffect(() => {
+    // Scroll behavior - glass effect on scroll
+    const handleScroll = () => {
+      if (navRef.current) {
+        if (window.scrollY > 50) {
+          navRef.current.classList.add('scrolled')
+        } else {
+          navRef.current.classList.remove('scrolled')
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const toggleDark = () => {
+    setIsDark(!isDark)
+    document.documentElement.classList.toggle('dark')
+  }
 
   const navLinks = [
     { label: 'Péptidos', href: '#productos' },
-    { label: 'Cómo Funciona', href: '#como-funciona' },
+    { label: 'Resultados', href: '#resultados' },
     { label: 'Médicos', href: '#medicos' },
-    { label: 'Blog', href: '#blog' },
+    { label: 'Cómo Funciona', href: '#como-funciona' },
   ]
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+    <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
       <div className="hers-container">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo - Left */}
-          <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold text-[#E91E63]">TITAN</span>
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link 
+            ref={logoRef}
+            href="/" 
+            className="flex items-center group"
+          >
+            <span className="text-2xl font-bold text-[#E91E63] tracking-tight transition-transform duration-300 group-hover:scale-105">
+              TITAN
+            </span>
           </Link>
 
-          {/* Desktop Nav - Center */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop Nav */}
+          <div className="hidden lg:flex items-center gap-10">
             {navLinks.map((link) => (
               <Link 
                 key={link.label}
-                href={link.href} 
-                className="text-sm font-medium text-foreground/80 hover:text-[#E91E63] transition-colors"
+                href={link.href}
+                className="nav-link relative text-sm font-medium text-foreground/80 hover:text-[#E91E63] transition-colors duration-300 py-2 group"
               >
                 {link.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#E91E63] transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
           </div>
 
-          {/* Right Side - Dark Mode + Login + CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            {/* Dark Mode Toggle */}
+          {/* Right Side */}
+          <div className="hidden lg:flex items-center gap-4">
             <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-accent transition-colors"
-              aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+              onClick={toggleDark}
+              className="p-2.5 rounded-full hover:bg-accent/50 transition-all duration-300 hover:scale-110"
+              aria-label="Toggle dark mode"
             >
-              {theme === 'dark' ? (
+              {isDark ? (
                 <Sun className="h-5 w-5 text-foreground" />
               ) : (
                 <Moon className="h-5 w-5 text-foreground" />
@@ -54,38 +110,24 @@ export function Navbar() {
             </button>
             
             <Link 
-              href="/login" 
-              className="text-sm font-medium text-foreground/80 hover:text-[#E91E63] transition-colors px-3"
-            >
-              Iniciar sesión
-            </Link>
-            <Link 
               href="#consulta" 
-              className="hers-btn-primary text-sm py-2.5 px-5"
+              className="hers-btn-primary text-sm py-3 px-6 hover:scale-105 transition-transform duration-300"
             >
               Comenzar
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-2 md:hidden">
-            {/* Mobile Dark Mode Toggle */}
+          <div className="flex items-center gap-2 lg:hidden">
             <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-accent transition-colors"
-              aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+              onClick={toggleDark}
+              className="p-2 rounded-full hover:bg-accent/50 transition-colors"
             >
-              {theme === 'dark' ? (
-                <Sun className="h-5 w-5 text-foreground" />
-              ) : (
-                <Moon className="h-5 w-5 text-foreground" />
-              )}
+              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
-            
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-full hover:bg-accent transition-colors"
-              aria-label="Toggle menu"
+              className="p-2 rounded-full hover:bg-accent/50 transition-colors"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -93,37 +135,29 @@ export function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        {isOpen && (
-          <div className="md:hidden py-4 border-t border-border">
-            <div className="flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <Link 
-                  key={link.label}
-                  href={link.href} 
-                  className="text-sm font-medium text-foreground/80 hover:text-[#E91E63] py-3 px-2 rounded-lg hover:bg-accent transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="border-t border-border my-2" />
+        <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className="py-6 border-t border-border/50 space-y-1">
+            {navLinks.map((link) => (
               <Link 
-                href="/login" 
-                className="text-sm font-medium text-foreground/80 hover:text-[#E91E63] py-3 px-2 rounded-lg hover:bg-accent transition-colors"
+                key={link.label}
+                href={link.href}
+                className="block text-base font-medium text-foreground/80 hover:text-[#E91E63] py-3 transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                Iniciar sesión
+                {link.label}
               </Link>
+            ))}
+            <div className="pt-4">
               <Link 
                 href="#consulta" 
-                className="hers-btn-primary text-center text-sm mt-2"
+                className="hers-btn-primary block text-center w-full"
                 onClick={() => setIsOpen(false)}
               >
                 Comenzar
               </Link>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   )

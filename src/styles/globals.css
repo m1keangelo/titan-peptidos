@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  /* Hers-inspired light theme */
   --background: 0 0% 100%;
   --foreground: 0 0% 9%;
   --card: 0 0% 100%;
@@ -22,19 +23,17 @@
   --border: 0 0% 90%;
   --input: 0 0% 90%;
   --ring: 340 82% 52%;
-  --radius: 0.5rem;
+  --radius: 0.75rem;
   
-  /* Hers exact colors */
+  /* Hers signature colors */
   --hers-pink: #E91E63;
   --hers-pink-dark: #C2185B;
   --hers-pink-light: #FCE4EC;
-  --hers-text: #1a1a1a;
-  --hers-gray: #666666;
-  --hers-light-gray: #f5f5f5;
-  --hers-border: #e5e5e5;
+  --hers-pink-subtle: #FDF2F4;
 }
 
 .dark {
+  /* Dark mode - maintaining Hers warmth */
   --background: 0 0% 6%;
   --foreground: 0 0% 95%;
   --card: 0 0% 8%;
@@ -66,92 +65,98 @@
 }
 
 @layer components {
-  /* Hers Layout Classes */
+  /* Navbar scrolled state */
+  nav.scrolled {
+    @apply bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-sm;
+  }
+
+  /* Hers Container - tighter max-width for focus */
   .hers-container {
-    @apply container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12;
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
   
+  /* Hers Section spacing */
   .hers-section {
-    @apply py-16 md:py-24;
+    @apply py-20 lg:py-28;
+  }
+  
+  /* Hers Buttons - pill shape like Hers */
+  .hers-btn-primary {
+    @apply bg-[#E91E63] hover:bg-[#C2185B] text-white font-semibold px-8 py-3.5 rounded-full transition-all duration-300 inline-flex items-center justify-center shadow-md hover:shadow-lg hover:shadow-[#E91E63]/20 active:scale-95;
+  }
+  
+  .hers-btn-secondary {
+    @apply bg-background border-2 border-[#E91E63] text-[#E91E63] hover:bg-[#E91E63] hover:text-white font-semibold px-8 py-3.5 rounded-full transition-all duration-300 inline-flex items-center justify-center active:scale-95;
+  }
+  
+  .hers-btn-ghost {
+    @apply hover:bg-[#E91E63]/5 text-foreground font-medium px-6 py-3 rounded-full transition-all duration-300;
+  }
+  
+  /* Hers Cards - subtle shadows, soft corners */
+  .hers-card {
+    @apply bg-card rounded-2xl border border-border/60 overflow-hidden transition-all duration-500 hover:shadow-xl hover:border-[#E91E63]/20;
   }
   
   /* Hers Typography */
-  .hers-heading {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight;
+  .hers-heading-xl {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1];
   }
   
-  .hers-heading-md {
+  .hers-heading-lg {
     @apply text-3xl md:text-4xl font-bold tracking-tight leading-tight;
   }
   
-  .hers-heading-sm {
+  .hers-heading-md {
     @apply text-2xl md:text-3xl font-bold tracking-tight;
   }
   
   .hers-body {
-    @apply text-base md:text-lg text-muted-foreground leading-relaxed;
+    @apply text-base lg:text-lg text-muted-foreground leading-relaxed;
   }
   
   .hers-body-sm {
     @apply text-sm text-muted-foreground leading-relaxed;
   }
   
-  /* Hers Cards */
-  .hers-card {
-    @apply bg-card rounded-2xl shadow-sm border border-border overflow-hidden transition-all duration-300 hover:shadow-lg;
-  }
-  
-  /* Hers Buttons */
-  .hers-btn-primary {
-    @apply bg-[#E91E63] hover:bg-[#C2185B] text-white font-semibold px-6 py-3 rounded-full transition-all duration-200 inline-flex items-center justify-center;
-  }
-  
-  .hers-btn-secondary {
-    @apply bg-background border border-border hover:border-[#E91E63] hover:text-[#E91E63] font-semibold px-6 py-3 rounded-full transition-all duration-200 inline-flex items-center justify-center;
-  }
-  
-  .hers-btn-ghost {
-    @apply hover:bg-accent font-medium px-4 py-2 rounded-full transition-all duration-200;
-  }
-  
-  /* Hers Input */
-  .hers-input {
-    @apply w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-[#E91E63]/20 focus:border-[#E91E63] transition-all;
-  }
-  
-  /* Footer link */
-  .footer-link {
-    @apply text-sm text-muted-foreground hover:text-[#E91E63] transition-colors;
-  }
-  
-  /* Quiz option */
+  /* Quiz options */
   .quiz-option {
-    @apply w-full p-4 rounded-xl border border-border bg-card hover:border-[#E91E63]/50 hover:bg-accent transition-all text-left;
+    @apply w-full p-5 rounded-xl border-2 border-border bg-card hover:border-[#E91E63]/40 hover:bg-[#E91E63]/5 transition-all duration-300 text-left font-medium;
   }
   
   .quiz-option.selected {
-    @apply border-[#E91E63] bg-[#E91E63]/5;
+    @apply border-[#E91E63] bg-[#E91E63]/10;
   }
   
   /* Testimonial card */
   .testimonial-card {
-    @apply bg-card rounded-3xl p-8 md:p-12 shadow-sm border border-border;
+    @apply bg-card rounded-3xl p-8 lg:p-10 shadow-sm border border-border/60;
   }
   
-  /* Stat number */
+  /* Stats */
   .stat-number {
-    @apply text-3xl md:text-4xl font-bold text-foreground;
+    @apply text-4xl md:text-5xl font-bold text-foreground tracking-tight;
+  }
+  
+  /* Input styling */
+  .hers-input {
+    @apply w-full px-5 py-4 rounded-xl border-2 border-border bg-background focus:outline-none focus:border-[#E91E63] focus:ring-4 focus:ring-[#E91E63]/10 transition-all duration-300;
+  }
+  
+  /* Footer links */
+  .footer-link {
+    @apply text-sm text-muted-foreground hover:text-[#E91E63] transition-colors duration-300;
   }
 }
 
-/* Smooth scroll */
+/* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - minimal */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -160,7 +165,7 @@ html {
 
 ::-webkit-scrollbar-thumb {
   background: #d1d5db;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -171,6 +176,12 @@ html {
   background: #4b5563;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+/* Selection color */
+::selection {
+  background: rgba(233, 30, 99, 0.2);
+}
+
+/* Focus visible styling */
+*:focus-visible {
+  @apply outline-none ring-2 ring-[#E91E63] ring-offset-2 ring-offset-background;
 }
