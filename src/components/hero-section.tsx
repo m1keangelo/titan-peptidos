@@ -1,147 +1,53 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { Button } from '@/components/ui/button'
-import { ArrowRight, Shield, Award, Stethoscope } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero-bg.jpg"
-          alt="Medical background"
-          fill
-          className="object-cover opacity-30"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
-      </div>
-      
-      {/* Animated gradient orb */}
-      <motion.div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full z-0"
-        style={{
-          background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 70%)',
-        }}
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.5, 0.8, 0.5],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
+    <section className="py-12 md:py-20 bg-gradient-to-b from-pink-50/50 to-white">
+      <div className="container mx-auto px-4">
+        <div className="max-w-4xl mx-auto text-center mb-12">
+          <h1 className="hers-heading text-gray-900 mb-6">
+            El cuidado que siempre mereciste
+          </h1>
+        </div>
 
-      <div className="container relative z-10 px-4 md:px-6">
-        <div className="flex flex-col items-center text-center space-y-8">
-          {/* Product Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="relative w-48 h-48 md:w-64 md:h-64 mb-4"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl" />
-            <Image
-              src="/images/peptide-vial.jpg"
-              alt="Titan Peptidos Vial"
-              fill
-              className="object-contain rounded-full border-2 border-primary/30 shadow-glow"
-            />
-          </motion.div>
-
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary"
-          >
-            <Shield className="h-4 w-4" />
-            <span>Telemedicina Certificada en Bolivia</span>
-          </motion.div>
-
-          {/* Main Heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="titan-heading gradient-text"
-          >
-            TITAN
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl md:text-2xl text-muted-foreground max-w-2xl"
-          >
-            Transforma tu potencial con péptidos de grado médico.
-            <br className="hidden sm:block" />
-            <span className="text-foreground font-medium">
-              Consultas en línea • Laboratorios certificados • Envíos a todo Bolivia
-            </span>
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
-          >
-            <Button size="lg" className="btn-glow text-lg px-8 py-6">
-              Comenzar Evaluación
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-6">
-              Ver Péptidos
-            </Button>
-          </motion.div>
-
-          {/* Trust Badges */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-wrap justify-center gap-6 pt-8"
-          >
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Stethoscope className="h-5 w-5 text-primary" />
-              <span>Médicos Certificados</span>
+        {/* Featured Product Card */}
+        <div className="max-w-5xl mx-auto">
+          <Link href="/perdida-de-peso" className="block hers-card group cursor-pointer">
+            <div className="grid md:grid-cols-2 gap-0">
+              <div className="relative h-64 md:h-96 overflow-hidden">
+                <Image
+                  src="/images/weightloss.jpg"
+                  alt="Pérdida de peso con péptidos"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-8 md:p-12 flex flex-col justify-center bg-gradient-to-br from-[#E91E63]/5 to-pink-100/20">
+                <span className="inline-flex items-center gap-2 bg-[#E91E63] text-white text-xs font-semibold px-3 py-1 rounded-full w-fit mb-4">
+                  Más Popular
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                  Pierde peso a tu manera
+                </h2>
+                <p className="text-xl text-gray-600 mb-2">
+                  desde $69/mes*
+                </p>
+                <p className="text-sm text-gray-500 mb-6">
+                  Semaglutida y Tirzepatida con soporte médico
+                </p>
+                <div className="flex items-center text-[#E91E63] font-medium group-hover:gap-2 transition-all">
+                  Comenzar ahora
+                  <ArrowRight className="h-5 w-5 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Award className="h-5 w-5 text-primary" />
-              <span>Janoshik + Bolivia</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Shield className="h-5 w-5 text-primary" />
-              <span>100% Legal</span>
-            </div>
-          </motion.div>
+          </Link>
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
-          <motion.div
-            className="w-1 h-2 rounded-full bg-muted-foreground"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-        </div>
-      </motion.div>
     </section>
   )
 }

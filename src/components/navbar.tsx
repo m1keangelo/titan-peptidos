@@ -1,104 +1,82 @@
 'use client'
 
 import Link from 'next/link'
+import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
-import { Menu, X, ShoppingCart, User } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ThemeSwitcher } from '@/components/theme-switcher'
-import { cn } from '@/lib/utils'
-
-const navLinks = [
-  { href: '/como-funciona', label: 'Cómo Funciona' },
-  { href: '/peptidos', label: 'Péptidos' },
-  { href: '/transformaciones', label: 'Transformaciones' },
-  { href: '/ciencia', label: 'Ciencia' },
-  { href: '/faq', label: 'FAQ' },
-]
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl">
-      <div className="container flex h-16 items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="titan-heading text-2xl sm:text-3xl tracking-tighter">
+    <nav className="sticky top-0 z-50 bg-white border-b border-gray-100">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="text-2xl font-bold text-[#E91E63]">
             TITAN
-          </span>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest hidden sm:inline">
-            Peptidos
-          </span>
-        </Link>
+          </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground animated-underline"
-            >
-              {link.label}
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-8">
+            <Link href="/peptidos" className="text-sm font-medium text-gray-700 hover:text-[#E91E63] transition-colors">
+              Péptidos
             </Link>
-          ))}
-        </nav>
+            <Link href="/como-funciona" className="text-sm font-medium text-gray-700 hover:text-[#E91E63] transition-colors">
+              Cómo Funciona
+            </Link>
+            <Link href="/laboratorio" className="text-sm font-medium text-gray-700 hover:text-[#E91E63] transition-colors">
+              Laboratorio
+            </Link>
+            <Link href="/blog" className="text-sm font-medium text-gray-700 hover:text-[#E91E63] transition-colors">
+              Blog
+            </Link>
+          </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-2">
-          <ThemeSwitcher />
-          
-          <Button variant="ghost" size="icon" className="hidden sm:flex">
-            <User className="h-5 w-5" />
-            <span className="sr-only">Cuenta</span>
-          </Button>
-          
-          <Button variant="ghost" size="icon" className="relative">
-            <ShoppingCart className="h-5 w-5" />
-            <span className="sr-only">Carrito</span>
-            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center">
-              0
-            </span>
-          </Button>
-
-          <Button className="hidden sm:flex btn-glow" size="sm">
-            Comenzar
-          </Button>
+          {/* CTA */}
+          <div className="hidden md:flex items-center gap-4">
+            <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-[#E91E63]">
+              Iniciar sesión
+            </Link>
+            <Link href="/evaluacion" className="hers-btn-primary text-sm">
+              Comenzar
+            </Link>
+          </div>
 
           {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden"
+          <button 
             onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2"
           >
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            <span className="sr-only">Menú</span>
-          </Button>
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
-      </div>
 
-      {/* Mobile Nav */}
-      <div
-        className={cn(
-          'lg:hidden border-t border-border/40 bg-background/95 backdrop-blur-xl',
-          isOpen ? 'block' : 'hidden'
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="md:hidden py-4 border-t border-gray-100">
+            <div className="flex flex-col gap-4">
+              <Link href="/peptidos" className="text-sm font-medium text-gray-700">
+                Péptidos
+              </Link>
+              <Link href="/como-funciona" className="text-sm font-medium text-gray-700">
+                Cómo Funciona
+              </Link>
+              <Link href="/laboratorio" className="text-sm font-medium text-gray-700">
+                Laboratorio
+              </Link>
+              <Link href="/blog" className="text-sm font-medium text-gray-700">
+                Blog
+              </Link>
+              <Link href="/login" className="text-sm font-medium text-gray-700">
+                Iniciar sesión
+              </Link>
+              <Link href="/evaluacion" className="hers-btn-primary text-center text-sm">
+                Comenzar
+              </Link>
+            </div>
+          </div>
         )}
-      >
-        <nav className="container flex flex-col gap-4 py-4">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground"
-              onClick={() => setIsOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Button className="w-full btn-glow mt-2">Comenzar Ahora</Button>
-        </nav>
       </div>
-    </header>
+    </nav>
   )
 }

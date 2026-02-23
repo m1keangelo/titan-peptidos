@@ -1,21 +1,27 @@
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { PromoBanner } from '@/components/promo-banner'
+import { Navbar } from '@/components/navbar'
 import { HeroSection } from '@/components/hero-section'
-import { HowItWorks } from '@/components/how-it-works'
-import { ProductShowcase } from '@/components/product-showcase'
-import { Transformations } from '@/components/transformations'
-import { TrustSignals } from '@/components/trust-signals'
-import { CTASection } from '@/components/cta-section'
+import { ProductGrid } from '@/components/product-grid'
+import { QuizSection } from '@/components/quiz-section'
+import { FeaturedSection } from '@/components/featured-section'
+import { Testimonials } from '@/components/testimonials'
+import { MedicalTeam } from '@/components/medical-team'
+import { TrustSection } from '@/components/trust-section'
+import { Footer } from '@/components/footer'
 
-export default function HomePage() {
+export default function Home() {
   return (
-    <>
+    <main className="min-h-screen bg-white">
+      <PromoBanner />
+      <Navbar />
       <HeroSection />
-      <TrustSignals />
-      <HowItWorks />
-      <ProductShowcase />
-      <Transformations />
-      <CTASection />
-    </>
+      <ProductGrid />
+      <QuizSection />
+      <FeaturedSection />
+      <Testimonials />
+      <MedicalTeam />
+      <TrustSection />
+      <Footer />
+    </main>
   )
 }

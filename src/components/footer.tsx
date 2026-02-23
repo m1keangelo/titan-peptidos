@@ -1,81 +1,58 @@
+'use client'
+
 import Link from 'next/link'
-import { Instagram, Youtube, Facebook, MessageCircle } from 'lucide-react'
 
 const footerLinks = {
-  productos: [
-    { label: 'Pérdida de Peso', href: '/peptidos/perdida-de-peso' },
-    { label: 'Rendimiento', href: '/peptidos/rendimiento' },
-    { label: 'Recuperación', href: '/peptidos/recuperacion' },
-    { label: 'Cognitivo', href: '/peptidos/cognitivo' },
-    { label: 'Salud Sexual', href: '/peptidos/salud-sexual' },
+  learn: [
+    { label: 'Péptidos', href: '/peptidos' },
+    { label: 'Pérdida de Peso', href: '/perdida-de-peso' },
+    { label: 'Rendimiento', href: '/rendimiento' },
+    { label: 'Recuperación', href: '/recuperacion' },
+    { label: 'Longevidad', href: '/longevidad' },
   ],
-  empresa: [
-    { label: 'Cómo Funciona', href: '/como-funciona' },
-    { label: 'Nuestro Equipo Médico', href: '/equipo-medico' },
-    { label: 'Certificaciones', href: '/certificaciones' },
-    { label: 'Ciencia', href: '/ciencia' },
+  tools: [
+    { label: 'Calculadora IMC', href: '/tools/imc' },
+    { label: 'Calculadora TDEE', href: '/tools/tdee' },
+    { label: 'Calculadora Proteína', href: '/tools/proteina' },
+    { label: 'Evaluación', href: '/evaluacion' },
+  ],
+  popular: [
+    { label: 'Semaglutida', href: '/peptidos/semaglutida' },
+    { label: 'Tirzepatida', href: '/peptidos/tirzepatida' },
+    { label: 'BPC-157', href: '/peptidos/bpc-157' },
+    { label: 'CJC-1295', href: '/peptidos/cjc-1295' },
+    { label: 'GHK-Cu', href: '/peptidos/ghk-cu' },
+  ],
+  company: [
+    { label: 'Sobre Nosotros', href: '/about' },
     { label: 'Blog', href: '/blog' },
-  ],
-  soporte: [
-    { label: 'FAQ', href: '/faq' },
-    { label: 'Contacto', href: '/contacto' },
-    { label: 'Envíos', href: '/envios' },
-    { label: 'Devoluciones', href: '/devoluciones' },
-  ],
-  legal: [
-    { label: 'Términos de Servicio', href: '/terminos' },
-    { label: 'Privacidad', href: '/privacidad' },
-    { label: 'Descargo Médico', href: '/descargo-medico' },
-    { label: 'Consentimiento Telemedicina', href: '/consentimiento' },
+    { label: 'Cómo Funciona', href: '/como-funciona' },
+    { label: 'Calidad y Seguridad', href: '/calidad' },
   ],
 }
 
-const socialLinks = [
-  { icon: Instagram, href: 'https://instagram.com/titanpeptidos', label: 'Instagram' },
-  { icon: Youtube, href: 'https://youtube.com/titanpeptidos', label: 'YouTube' },
-  { icon: Facebook, href: 'https://facebook.com/titanpeptidos', label: 'Facebook' },
-  { icon: MessageCircle, href: 'https://wa.me/1234567890', label: 'WhatsApp' },
-]
-
 export function Footer() {
   return (
-    <footer className="border-t border-border/40 bg-background">
-      <div className="container py-12 md:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+    <footer className="bg-gray-900 text-white py-16">
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-4 lg:col-span-1">
-            <Link href="/" className="inline-block">
-              <span className="titan-heading text-3xl tracking-tighter">TITAN</span>
+          <div className="lg:col-span-1">
+            <Link href="/" className="text-2xl font-bold text-[#E91E63]">
+              TITAN
             </Link>
-            <p className="mt-4 text-sm text-muted-foreground max-w-xs">
-              Telemedicina de péptidos premium en Bolivia. Transforma tu potencial con ciencia y supervisión médica.
+            <p className="text-gray-400 text-sm mt-4">
+              Telemedicina de péptidos premium en Bolivia.
             </p>
-            <div className="mt-6 flex gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <social.icon className="h-5 w-5" />
-                  <span className="sr-only">{social.label}</span>
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Links */}
           <div>
-            <h3 className="font-semibold mb-3">Productos</h3>
+            <h4 className="font-semibold mb-4">Aprender</h4>
             <ul className="space-y-2">
-              {footerLinks.productos.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
+              {footerLinks.learn.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -84,14 +61,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-3">Empresa</h3>
+            <h4 className="font-semibold mb-4">Herramientas</h4>
             <ul className="space-y-2">
-              {footerLinks.empresa.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
+              {footerLinks.tools.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -100,14 +74,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-3">Soporte</h3>
+            <h4 className="font-semibold mb-4">Popular</h4>
             <ul className="space-y-2">
-              {footerLinks.soporte.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
+              {footerLinks.popular.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -116,14 +87,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-3">Legal</h3>
+            <h4 className="font-semibold mb-4">Titan</h4>
             <ul className="space-y-2">
-              {footerLinks.legal.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
+              {footerLinks.company.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -133,17 +101,22 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-border/40 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Titan Peptidos. Todos los derechos reservados.
-          </p>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              Bolivia
-            </span>
-            <span>•</span>
-            <span>Hecho con 💪 en Santa Cruz</span>
+        <div className="border-t border-gray-800 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-gray-500 text-sm">
+              © 2026 Titan Peptidos. Todos los derechos reservados.
+            </p>
+            <div className="flex gap-6">
+              <Link href="/terms" className="text-gray-500 hover:text-white text-sm">
+                Términos
+              </Link>
+              <Link href="/privacy" className="text-gray-500 hover:text-white text-sm">
+                Privacidad
+              </Link>
+              <Link href="/consentimiento" className="text-gray-500 hover:text-white text-sm">
+                Consentimiento
+              </Link>
+            </div>
           </div>
         </div>
       </div>
