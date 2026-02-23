@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { Inter, Cal_Sans } from 'next/font/google'
-import './globals.css'
+import { Inter } from 'next/font/google'
+import '../styles/globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
@@ -8,12 +8,6 @@ import { Footer } from '@/components/footer'
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-sans',
-})
-
-const calSans = Cal_Sans({
-  subsets: ['latin'],
-  variable: '--font-display',
-  weight: '600',
 })
 
 export const metadata: Metadata = {
@@ -29,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${inter.variable} ${calSans.variable} font-sans`}>
+      <body className={`${inter.variable} font-sans`}>
         <ThemeProvider>
           <div className="relative min-h-screen flex flex-col">
             <Navbar />
