@@ -1,7 +1,7 @@
 'use client'
 
-import { X } from 'lucide-react'
 import { useState } from 'react'
+import { X } from 'lucide-react'
 
 export function PromoBanner() {
   const [isVisible, setIsVisible] = useState(true)
@@ -9,19 +9,22 @@ export function PromoBanner() {
   if (!isVisible) return null
 
   return (
-    <div className="bg-[#E91E63] text-white py-2.5 px-4 relative">
-      <div className="container mx-auto text-center text-sm font-medium">
-        <span className="font-bold">20% OFF</span> en tu primera consulta 
-        <span className="hidden sm:inline"> — Protocolos personalizados con médicos certificados</span>
-        <button className="ml-2 underline hover:no-underline font-semibold">Reclamar ahora</button>
+    <div className="fixed top-0 left-0 right-0 z-[60] bg-[#E91E63] text-white">
+      <div className="hers-container py-2.5">
+        <div className="flex items-center justify-center gap-2 text-sm font-medium">
+          <span className="hidden sm:inline">🎉</span>
+          <span>
+            <strong>20% de descuento</strong> en tu primera consulta con código <strong>TITAN20</strong>
+          </span>
+          <button
+            onClick={() => setIsVisible(false)}
+            className="absolute right-4 p-1 hover:bg-white/20 rounded-full transition-colors"
+            aria-label="Cerrar banner"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
       </div>
-      <button 
-        onClick={() => setIsVisible(false)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 hover:bg-white/20 rounded-full p-1 transition-colors"
-        aria-label="Cerrar banner"
-      >
-        <X className="h-4 w-4" />
-      </button>
     </div>
   )
 }

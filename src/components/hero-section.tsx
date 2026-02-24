@@ -85,7 +85,7 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen pt-32 pb-20 overflow-hidden">
+    <section ref={sectionRef} className="relative min-h-screen pt-40 pb-20 overflow-hidden">
       {/* Soft gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#E91E63]/3 via-background to-background -z-10" />
       
