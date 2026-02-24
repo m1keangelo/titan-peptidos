@@ -1,11 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const testimonials = [
   {
@@ -59,29 +55,58 @@ export function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
+  const gsapRef = useRef<any>(null)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.testimonials-header', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse'
-        }
-      })
-    }, sectionRef)
+    // Dynamically import GSAP only on client side
+    const initGSAP = async () => {
+      try {
+        const gsapModule = await import('gsap')
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+        const gsap = gsapModule.gsap
+        
+        gsapRef.current = gsap
+        gsap.registerPlugin(ScrollTrigger)
+        
+        const ctx = gsap.context(() => {
+          gsap.from('.testimonials-header', {
+            y: 40,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse'
+            }
+          })
+        }, sectionRef)
 
-    return () => ctx.revert()
+        return () => ctx.revert()
+      } catch (error) {
+        console.error('GSAP failed to load:', error)
+      }
+    }
+    
+    initGSAP()
   }, [])
 
   const animateCard = (direction: 'next' | 'prev') => {
-    if (isAnimating || !cardRef.current) return
+    if (isAnimating || !cardRef.current || !gsapRef.current) {
+      // Fallback if GSAP not loaded
+      if (!gsapRef.current) {
+        setCurrentIndex(prev => {
+          if (direction === 'next') {
+            return prev === testimonials.length - 1 ? 0 : prev + 1
+          }
+          return prev === 0 ? testimonials.length - 1 : prev - 1
+        })
+      }
+      return
+    }
     
     setIsAnimating(true)
+    const gsap = gsapRef.current
     const xOffset = direction === 'next' ? -100 : 100
     
     gsap.to(cardRef.current, {
@@ -160,7 +185,7 @@ export function Testimonials() {
                   {current.result}
                 </div>
                 <blockquote className="text-xl lg:text-2xl text-foreground font-medium leading-relaxed mb-4">
-                  "{current.quote}"
+                  &quot;{current.quote}&quot;
                 </blockquote>
                 <p className="text-sm text-muted-foreground">
                   Producto: <span className="font-medium text-foreground">{current.product}</span>

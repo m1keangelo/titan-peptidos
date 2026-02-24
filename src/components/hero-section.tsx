@@ -1,13 +1,9 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Sparkles } from 'lucide-react'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -15,59 +11,77 @@ export function HeroSection() {
   const subheadRef = useRef<HTMLParagraphElement>(null)
   const cardRef = useRef<HTMLAnchorElement>(null)
   const badgeRef = useRef<HTMLSpanElement>(null)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Headline reveal
-      gsap.from(headlineRef.current, {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-        delay: 0.4
-      })
+    setIsLoaded(true)
+    
+    // Dynamically import GSAP only on client side
+    const initGSAP = async () => {
+      try {
+        const gsapModule = await import('gsap')
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+        const gsap = gsapModule.gsap
+        
+        gsap.registerPlugin(ScrollTrigger)
+        
+        const ctx = gsap.context(() => {
+          // Headline reveal
+          gsap.from(headlineRef.current, {
+            y: 60,
+            opacity: 0,
+            duration: 1,
+            ease: 'power3.out',
+            delay: 0.4
+          })
 
-      // Subhead reveal
-      gsap.from(subheadRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-        delay: 0.7
-      })
+          // Subhead reveal
+          gsap.from(subheadRef.current, {
+            y: 40,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            delay: 0.7
+          })
 
-      // Card entrance
-      gsap.from(cardRef.current, {
-        y: 80,
-        opacity: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-        delay: 0.9
-      })
+          // Card entrance
+          gsap.from(cardRef.current, {
+            y: 80,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            delay: 0.9
+          })
 
-      // Badge pulse
-      gsap.to(badgeRef.current, {
-        scale: 1.05,
-        duration: 1.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'power1.inOut'
-      })
+          // Badge pulse
+          gsap.to(badgeRef.current, {
+            scale: 1.05,
+            duration: 1.5,
+            repeat: -1,
+            yoyo: true,
+            ease: 'power1.inOut'
+          })
 
-      // Parallax on scroll
-      gsap.to(cardRef.current, {
-        y: -50,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1
-        }
-      })
-    }, sectionRef)
+          // Parallax on scroll
+          gsap.to(cardRef.current, {
+            y: -50,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top top',
+              end: 'bottom top',
+              scrub: 1
+            }
+          })
+        }, sectionRef)
 
-    return () => ctx.revert()
+        return () => ctx.revert()
+      } catch (error) {
+        console.error('GSAP failed to load:', error)
+      }
+    }
+    
+    initGSAP()
   }, [])
 
   return (

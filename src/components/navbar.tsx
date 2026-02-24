@@ -1,41 +1,61 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
 import { Menu, X, Moon, Sun } from 'lucide-react'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isDark, setIsDark] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
   const navRef = useRef<HTMLElement>(null)
   const logoRef = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
-    // Initial animation
-    const ctx = gsap.context(() => {
-      gsap.from(navRef.current, {
-        y: -100,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        delay: 0.2
-      })
+    let ctx: { revert: () => void } | null = null
 
-      gsap.from('.nav-link', {
-        y: -20,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.08,
-        ease: 'power2.out',
-        delay: 0.5
-      })
-    })
+    const initGSAP = async () => {
+      try {
+        const gsapModule = await import('gsap')
+        const scrollTriggerModule = await import('gsap/ScrollTrigger')
+        const gsap = gsapModule.gsap
+        const ScrollTrigger = scrollTriggerModule.ScrollTrigger
 
-    return () => ctx.revert()
+        gsap.registerPlugin(ScrollTrigger)
+
+        // Initial animation
+        ctx = gsap.context(() => {
+          gsap.from(navRef.current, {
+            y: -100,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            delay: 0.2
+          })
+
+          gsap.from('.nav-link', {
+            y: -20,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: 'power2.out',
+            delay: 0.5
+          })
+        })
+
+        setIsLoaded(true)
+      } catch (error) {
+        console.error('GSAP initialization error:', error)
+        // Ensure content is visible even if GSAP fails
+        setIsLoaded(true)
+      }
+    }
+
+    initGSAP()
+
+    return () => {
+      if (ctx) ctx.revert()
+    }
   }, [])
 
   useEffect(() => {
@@ -67,7 +87,7 @@ export function Navbar() {
   ]
 
   return (
-    <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+    <nav ref={navRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isLoaded ? '' : 'opacity-100'}`}>
       <div className="hers-container">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}

@@ -1,13 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const products = [
   {
@@ -48,29 +44,52 @@ export function ProductGrid() {
   const sectionRef = useRef<HTMLElement>(null)
   const cardsRef = useRef<(HTMLAnchorElement | null)[]>([])
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Staggered card reveal
-      gsap.from(cardsRef.current.filter(Boolean), {
-        y: 60,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse'
-        }
-      })
-    }, sectionRef)
+    let ctx: { revert: () => void } | null = null
 
-    return () => ctx.revert()
+    const initGSAP = async () => {
+      try {
+        const gsapModule = await import('gsap')
+        const scrollTriggerModule = await import('gsap/ScrollTrigger')
+        const gsap = gsapModule.gsap
+        const ScrollTrigger = scrollTriggerModule.ScrollTrigger
+
+        gsap.registerPlugin(ScrollTrigger)
+
+        ctx = gsap.context(() => {
+          // Staggered card reveal
+          gsap.from(cardsRef.current.filter(Boolean), {
+            y: 60,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse'
+            }
+          })
+        }, sectionRef)
+
+        setIsLoaded(true)
+      } catch (error) {
+        console.error('GSAP initialization error:', error)
+        setIsLoaded(true)
+      }
+    }
+
+    initGSAP()
+
+    return () => {
+      if (ctx) ctx.revert()
+    }
   }, [])
 
   return (
-    <section ref={sectionRef} id="productos" className="hers-section bg-background">
+    <section ref={sectionRef} id="productos" className={`hers-section bg-background ${isLoaded ? '' : 'opacity-100'}`}>
       <div className="hers-container">
         {/* Section Header */}
         <div className="text-center mb-16">

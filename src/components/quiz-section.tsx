@@ -1,11 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowRight, Check } from 'lucide-react'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const quizOptions = [
   { id: 'weight', label: 'Perder peso o mejorar mi metabolismo', icon: '🔥' },
@@ -20,55 +16,85 @@ export function QuizSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const [selected, setSelected] = useState<string | null>(null)
   const [progress, setProgress] = useState(0)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const gsapRef = useRef<any>(null)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Section reveal
-      gsap.from('.quiz-header', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse'
-        }
-      })
+    let ctx: { revert: () => void } | null = null
 
-      // Options stagger
-      gsap.from('.quiz-option-item', {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.quiz-options',
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        }
-      })
-    }, sectionRef)
+    const initGSAP = async () => {
+      try {
+        const gsapModule = await import('gsap')
+        const scrollTriggerModule = await import('gsap/ScrollTrigger')
+        const gsap = gsapModule.gsap
+        const ScrollTrigger = scrollTriggerModule.ScrollTrigger
 
-    return () => ctx.revert()
+        gsapRef.current = gsap
+        gsap.registerPlugin(ScrollTrigger)
+
+        ctx = gsap.context(() => {
+          // Section reveal
+          gsap.from('.quiz-header', {
+            y: 40,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse'
+            }
+          })
+
+          // Options stagger
+          gsap.from('.quiz-option-item', {
+            y: 30,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: '.quiz-options',
+              start: 'top 85%',
+              toggleActions: 'play none none reverse'
+            }
+          })
+        }, sectionRef)
+
+        setIsLoaded(true)
+      } catch (error) {
+        console.error('GSAP initialization error:', error)
+        setIsLoaded(true)
+      }
+    }
+
+    initGSAP()
+
+    return () => {
+      if (ctx) ctx.revert()
+    }
   }, [])
 
   const handleSelect = (id: string) => {
     setSelected(id)
     // Animate progress
-    gsap.to({ val: progress }, {
-      val: 20,
-      duration: 0.5,
-      ease: 'power2.out',
-      onUpdate: function() {
-        setProgress(Math.round(this.targets()[0].val))
-      }
-    })
+    const gsap = gsapRef.current
+    if (gsap) {
+      gsap.to({ val: progress }, {
+        val: 20,
+        duration: 0.5,
+        ease: 'power2.out',
+        onUpdate: function() {
+          setProgress(Math.round(this.targets()[0].val))
+        }
+      })
+    } else {
+      setProgress(20)
+    }
   }
 
   return (
-    <section ref={sectionRef} id="consulta" className="hers-section bg-gradient-to-b from-[#E91E63]/5 to-background">
+    <section ref={sectionRef} id="consulta" className={`hers-section bg-gradient-to-b from-[#E91E63]/5 to-background ${isLoaded ? '' : 'opacity-100'}`}>
       <div className="hers-container max-w-3xl">
         {/* Progress Bar */}
         <div className="mb-12">
